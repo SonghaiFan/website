@@ -1,0 +1,26 @@
+name: Deploy VitePress blog
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Blog/**"
+      - "assets/**"
+      - ".github/workflows/deploy-blog.yml"
+  schedule:
+    - cron: '3-58/5 * * * *'
+  workflow_dispatch:
+    inputs:
+      web_ref:
+        description: 'Checked website commit SHA; empty uses tested tag'
+        required: false
+        default: ''
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    uses: SonghaiFan/website/.github/workflows/pages.yml@tested
+    with:
+      target: blog
+      web_ref: ${{ inputs.web_ref || '' }}

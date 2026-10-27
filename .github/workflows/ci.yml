@@ -1,0 +1,43 @@
+name: Check website
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node scripts/demo-vault.mjs "$RUNNER_TEMP/vault"
+      - run: npm run check
+        env:
+          VAULT_ROOT: ${{ runner.temp }}/vault
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:preview
+      - run: npx wrangler deploy --config apps/api/wrangler.jsonc --dry-run --outdir artifacts/worker
+  promote:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Point tested tag at the checked commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          if gh api "repos/$REPO/git/ref/tags/tested" >/dev/null 2>&1; then
+            gh api --method PATCH "repos/$REPO/git/refs/tags/tested" -f sha="$SHA" -F force=true
+          else
+            gh api --method POST "repos/$REPO/git/refs" -f ref=refs/tags/tested -f sha="$SHA"
+          fi

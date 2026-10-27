@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
+  "name": "songhai-blog-search",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "ratelimits": [
+    { "name": "CHAT_RATE_LIMIT", "namespace_id": "736421", "simple": { "limit": 6, "period": 60 } },
+    { "name": "CONTACT_RATE_LIMIT", "namespace_id": "736422", "simple": { "limit": 2, "period": 60 } }
+  ],
+  "routes": [
+    { "pattern": "api.songhai.site", "custom_domain": true }
+  ]
+}

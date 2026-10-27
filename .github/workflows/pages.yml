@@ -1,0 +1,104 @@
+name: Publish website
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+      web_ref:
+        required: false
+        type: string
+        default: ''
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.source.outputs.sha }}
+      publish: ${{ steps.source.outputs.publish }}
+    steps:
+      - id: source
+        name: Resolve checked website source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WEB_REF: ${{ inputs.web_ref }}
+          TARGET: ${{ inputs.target }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          case "$TARGET" in home|blog) ;; *) exit 1 ;; esac
+          sha="$WEB_REF"
+          if [ -z "$sha" ]; then sha="$(gh api repos/SonghaiFan/website/git/ref/tags/tested --jq .object.sha)"; fi
+          if ! [[ "$sha" =~ ^[a-f0-9]{40}$ ]]; then exit 1; fi
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          domain=songhai.site
+          if [ "$TARGET" = blog ]; then domain=blog.songhai.site; fi
+          publish=true
+          if [ "$EVENT" = schedule ]; then
+            deployed="$(curl --fail --silent --max-time 20 "https://$domain/build.json" | jq -r .webSha || true)"
+            if [ "$deployed" = "$sha" ]; then publish=false; fi
+          fi
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+  build:
+    needs: source
+    if: needs.source.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: SonghaiFan/website
+          ref: ${{ needs.source.outputs.sha }}
+          path: website
+          persist-credentials: false
+      - if: inputs.target == 'blog'
+        uses: actions/checkout@v6
+        with:
+          path: vault
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - uses: actions/configure-pages@v5
+      - run: npm ci
+        working-directory: website
+      - run: npm test
+        working-directory: website
+      - name: Build selected site
+        env:
+          TARGET: ${{ inputs.target }}
+          VAULT_ROOT: ${{ github.workspace }}/vault
+        working-directory: website
+        run: npm run "build:$TARGET"
+      - name: Write public build provenance
+        env:
+          TARGET: ${{ inputs.target }}
+          WEB_SHA: ${{ needs.source.outputs.sha }}
+          CONTENT_SHA: ${{ github.sha }}
+        working-directory: website
+        run: node scripts/build-provenance.mjs
+      - if: inputs.target == 'home'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/apps/home/.site-dist
+      - if: inputs.target == 'blog'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/apps/blog/.stage/docs/.vitepress/dist
+  deploy:
+    needs: [source, build]
+    if: needs.source.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

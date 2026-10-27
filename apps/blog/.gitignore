@@ -1,0 +1,5 @@
+node_modules/
+.stage/
+.stage-dev-refresh/
+docs/.vitepress/cache/
+docs/.vitepress/dist/

@@ -1,0 +1,614 @@
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(247, 247, 245, 0.94);
+  backdrop-filter: blur(12px);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: max-content;
+  color: var(--ink);
+}
+
+.brand-signature {
+  display: block;
+  width: 67px;
+  height: auto;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  justify-content: flex-end;
+  gap: 6px;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.controls label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.version-cluster {
+  display: grid;
+  grid-template-columns: minmax(220px, 330px) auto auto;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.role-control {
+  grid-template-columns: 1fr !important;
+  width: 100%;
+}
+
+.checkbox-control {
+  display: flex !important;
+  grid-template-columns: none !important;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.mode-control {
+  display: inline-flex;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.mode-control button {
+  min-width: 48px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mode-control button:first-child {
+  border-left: 0;
+}
+
+.mode-control button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.checkbox-control input {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--ink);
+}
+
+.slider-control {
+  grid-template-columns: auto 92px 30px !important;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.slider-control input {
+  width: 92px;
+  accent-color: var(--ink);
+}
+
+.scale-mark {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1;
+  text-transform: none;
+}
+
+.slider-control datalist {
+  display: none;
+}
+
+.slider-control output {
+  color: var(--muted);
+  font-size: 10px;
+  text-align: right;
+}
+
+select,
+.icon-button,
+.edit-button,
+.compact-button {
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+select {
+  width: 100%;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 26px 0 10px;
+  border-radius: 0;
+  color: var(--ink);
+}
+
+.icon-button {
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.edit-button {
+  height: 32px;
+  padding: 0 11px;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 680;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.compact-button {
+  height: 32px;
+  padding: 0 9px;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 680;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.edit-button.active {
+  border-color: var(--edit-accent);
+  background: var(--edit-accent);
+  color: #ffffff;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+}
+
+.editor-toolbar {
+  position: fixed;
+  right: 50%;
+  bottom: 18px;
+  z-index: 24;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 5px;
+  border: 1px solid #333333;
+  background: #151515;
+  color: #f7f7f5;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+  transform: translateX(50%);
+}
+
+.editor-toolbar[hidden],
+.layout-warning[hidden] {
+  display: none;
+}
+
+.editor-guide {
+  padding: 0 8px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.editor-status {
+  min-width: 100px;
+  padding: 0 8px;
+  color: #d4d4d0;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.editor-button {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid #4b4b4b;
+  background: #252525;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.editor-button:hover:not(:disabled) {
+  border-color: #8a8a8a;
+  background: #333333;
+}
+
+.editor-button:active:not(:disabled),
+.edit-button:active {
+  transform: translateY(1px);
+}
+
+.editor-button:disabled {
+  color: #777777;
+  cursor: not-allowed;
+}
+
+.editor-reset:not(:disabled) {
+  border-color: #7e3b35;
+  color: #ffd9d5;
+}
+
+.version-menu {
+  position: fixed;
+  top: 57px;
+  right: 16px;
+  z-index: 32;
+  display: grid;
+  width: 230px;
+  padding: 6px;
+  border: 1px solid #333333;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+.version-menu[hidden],
+.version-notice[hidden] {
+  display: none;
+}
+
+.version-menu-title {
+  padding: 8px 9px 10px;
+  overflow: hidden;
+  color: #555555;
+  font-size: 10px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-menu button {
+  height: 32px;
+  padding: 0 9px;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.version-menu button:hover:not(:disabled),
+.version-menu button:focus-visible {
+  background: #eeeeeb;
+}
+
+.version-menu button:disabled {
+  color: #aaaaaa;
+  cursor: not-allowed;
+}
+
+.version-menu .danger-action:not(:disabled) {
+  color: #8a2820;
+}
+
+.version-menu-rule {
+  height: 1px;
+  margin: 5px 0;
+  background: var(--line);
+}
+
+.version-dialog {
+  width: min(430px, calc(100vw - 24px));
+  padding: 0;
+  border: 1px solid #222222;
+  border-radius: 0;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+.version-dialog::backdrop {
+  background: rgba(18, 18, 18, 0.36);
+}
+
+.version-dialog form {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.version-dialog-heading {
+  display: grid;
+  gap: 5px;
+  padding-bottom: 3px;
+}
+
+.version-dialog-heading h2 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.version-dialog-heading p {
+  margin: 0;
+  color: #555555;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.version-field {
+  display: grid;
+  gap: 6px;
+  color: #333333;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.version-field[hidden] {
+  display: none;
+}
+
+.version-field input,
+.version-field select {
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid #777777;
+  border-radius: 0;
+  background: #ffffff;
+  color: #111111;
+  font: 13px/1.2 Inter, Arial, sans-serif;
+  text-transform: none;
+}
+
+.version-field input:focus,
+.version-field select:focus {
+  border-color: var(--edit-accent);
+  outline: 2px solid rgba(56, 103, 232, 0.23);
+  outline-offset: 1px;
+}
+
+.version-form-error {
+  min-height: 15px;
+  color: #7a251e;
+  font-size: 10px;
+}
+
+.version-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.dialog-button {
+  height: 34px;
+  padding: 0 13px;
+  border-radius: 0;
+  font-size: 11px;
+  font-weight: 680;
+  cursor: pointer;
+}
+
+.dialog-button.secondary {
+  border: 1px solid #888888;
+  background: #ffffff;
+  color: #111111;
+}
+
+.dialog-button.primary {
+  border: 1px solid var(--edit-accent);
+  background: var(--edit-accent);
+  color: #ffffff;
+}
+
+.version-notice {
+  position: fixed;
+  right: 16px;
+  bottom: 18px;
+  z-index: 26;
+  padding: 9px 11px;
+  border: 1px solid #333333;
+  background: #151515;
+  color: #f7f7f5;
+  font-size: 11px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.layout-warning {
+  position: fixed;
+  right: 16px;
+  bottom: 70px;
+  z-index: 23;
+  max-width: 320px;
+  padding: 9px 11px;
+  border: 1px solid #8d453e;
+  background: #fff4f2;
+  color: #6f211a;
+  font-size: 11px;
+  line-height: 1.35;
+  box-shadow: 0 8px 24px rgba(111, 33, 26, 0.12);
+}
+
+@media (max-width: 720px) {
+  .app-bar {
+    position: static;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .controls {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .version-cluster {
+    width: 100%;
+  }
+
+  .controls label {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .mode-control {
+    order: 3;
+  }
+
+  .checkbox-control,
+  .slider-control {
+    order: 4;
+  }
+
+  .brand-logo {
+    width: max-content;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: minmax(132px, 1fr) minmax(150px, 220px) 50px 32px;
+    gap: 8px;
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .version-cluster {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .controls label {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .checkbox-control {
+    order: initial;
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .slider-control {
+    order: initial;
+    grid-column: 2;
+    grid-row: 3;
+    grid-template-columns: auto minmax(100px, 1fr) 32px !important;
+  }
+
+  .mode-control {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+  }
+
+  .mode-control button {
+    flex: 1 1 0;
+  }
+
+  .slider-control input {
+    width: 100%;
+  }
+
+  .icon-button {
+    order: initial;
+    grid-column: 4;
+    grid-row: 3;
+  }
+
+  .edit-button {
+    grid-column: 3;
+    grid-row: 3;
+  }
+
+  .brand-logo {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .controls {
+    grid-template-columns: 1fr 50px 32px;
+  }
+
+  .version-cluster {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .edit-button {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .icon-button {
+    grid-column: 3;
+    grid-row: 3;
+  }
+
+  .checkbox-control {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .slider-control {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+
+  .mode-control {
+    grid-row: 2;
+  }
+
+  .editor-toolbar {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    justify-content: center;
+    transform: none;
+  }
+
+  .editor-status {
+    min-width: 0;
+  }
+
+  .editor-guide {
+    display: none;
+  }
+}

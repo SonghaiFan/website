@@ -1,0 +1,782 @@
+@font-face {
+  font-family: "Helvetica Neue ME Fallback";
+  src: local("Helvetica Neue"), local("Helvetica"), local("Arial");
+  font-display: swap;
+}
+
+:root {
+  --songhai-cream: #efeee9;
+  --songhai-ink: #111111;
+  --songhai-panel: #151515;
+  --songhai-line: rgba(239, 238, 233, 0.24);
+  --songhai-radius-sm: 6px;
+  --songhai-radius: 10px;
+  --songhai-radius-pill: 999px;
+  --songhai-motion-fast: 140ms;
+  --songhai-motion-base: 220ms;
+  --songhai-motion-slow: 360ms;
+  --songhai-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --songhai-font: "Helvetica Neue ME", "Helvetica Neue ME Fallback", Helvetica, Arial, sans-serif;
+  --vp-font-family-base: var(--songhai-font);
+  --vp-font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --vp-c-bg: var(--songhai-ink);
+  --vp-c-bg-alt: #151515;
+  --vp-c-bg-elv: #1a1a1a;
+  --vp-c-bg-soft: #1d1d1d;
+  --vp-c-text-1: var(--songhai-cream);
+  --vp-c-text-2: rgba(239, 238, 233, 0.68);
+  --vp-c-text-3: rgba(239, 238, 233, 0.45);
+  --vp-c-divider: var(--songhai-line);
+  --vp-c-divider-light: rgba(239, 238, 233, 0.14);
+  --vp-c-brand-1: var(--songhai-cream);
+  --vp-c-brand-2: rgba(239, 238, 233, 0.78);
+  --vp-c-brand-3: rgba(239, 238, 233, 0.6);
+  --vp-c-brand-soft: rgba(239, 238, 233, 0.1);
+  --vp-code-color: var(--songhai-cream);
+  --vp-code-bg: #1a1a1a;
+  --vp-code-block-bg: #1b1e24;
+  --vp-home-hero-name-color: var(--songhai-cream);
+}
+
+html.dark {
+  color-scheme: dark;
+  background: var(--songhai-ink);
+}
+
+html:not(.dark) {
+  color-scheme: light;
+  background: #f7f6f2;
+  --songhai-cream: #171717;
+  --songhai-ink: #f7f6f2;
+  --songhai-panel: #ffffff;
+  --songhai-line: rgba(17, 17, 17, 0.18);
+  --vp-c-bg: #f7f6f2;
+  --vp-c-bg-alt: #f0efeb;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #eeede8;
+  --vp-c-text-1: #171717;
+  --vp-c-text-2: rgba(23, 23, 23, 0.72);
+  --vp-c-text-3: rgba(23, 23, 23, 0.52);
+  --vp-c-divider: rgba(17, 17, 17, 0.18);
+  --vp-c-divider-light: rgba(17, 17, 17, 0.12);
+  --vp-c-brand-1: #171717;
+  --vp-c-brand-2: rgba(23, 23, 23, 0.78);
+  --vp-c-brand-3: rgba(23, 23, 23, 0.62);
+  --vp-c-brand-soft: rgba(17, 17, 17, 0.08);
+  --vp-code-color: #242424;
+  --vp-code-bg: #ecebe6;
+  --vp-code-block-bg: #f0efeb;
+  --vp-home-hero-name-color: #171717;
+}
+
+body {
+  background: var(--songhai-ink);
+  color: var(--songhai-cream);
+  font-family: var(--songhai-font);
+  text-rendering: geometricPrecision;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Editorial treatment for all default VitePress pages. */
+
+/* Shared home/blog header: identical geometry and primary control positions. */
+:root {
+  --vp-nav-height: 64px;
+  --site-header-gap: 24px;
+  --site-header-accent: #6a49c9;
+}
+.VPNavBar {
+  border-bottom: 0 !important;
+  background: color-mix(in srgb, var(--vp-c-bg) 72%, transparent) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: inset 0 -1px 0 var(--vp-c-divider-light);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+html:not(.dark) .VPNavBar {
+  background: color-mix(in srgb, #f7f6f3 72%, transparent) !important;
+  box-shadow: inset 0 -1px 0 #e0dcd5;
+  --vp-c-text-2: #1b1a18;
+}
+.VPNavBar .wrapper { padding: 0 40px !important; }
+.VPNavBar .container { max-width: 1480px !important; }
+.VPNavBar .container > .title {
+  position: static !important;
+  width: auto !important;
+  height: var(--vp-nav-height) !important;
+  padding: 0 !important;
+}
+.VPNavBar .content { padding: 0 !important; }
+.VPNavBar .content-body { gap: var(--site-header-gap); }
+.VPNavBar .content-body,
+.VPNavBar .title,
+.VPNavBar .divider-line { background: transparent !important; }
+.VPNavBarTitle .title { border-bottom: 0 !important; }
+.VPNavBarTitle .logo {
+  width: 28px;
+  height: 24px;
+  max-height: 24px;
+  margin: 0;
+  object-fit: contain;
+  filter: invert(1);
+}
+.VPSidebar .curtain { background: transparent !important; }
+.vp-doc .search-document-title { display: none; }
+.VPNavBarTranslations,
+.VPNavBarAppearance,
+.VPNavBarExtra,
+.VPNavBarHamburger,
+.VPNavScreenTranslations,
+.VPNavScreenAppearance { display: none !important; }
+.nav-site-controls { margin: 0; }
+.screen-site-controls { display: none !important; }
+.journal-page .VPNavBarSearch .DocSearch-Button { display: none; }
+.VPNavBarSearch { flex: 0 0 auto !important; padding-left: 0 !important; }
+.journal-page .VPNavBarSearch { display: none; }
+.VPNavBarSearch .DocSearch-Button {
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.VPNavBarSearch .DocSearch-Button:hover { background: var(--vp-c-bg-soft); }
+.VPNavBarSearch .DocSearch-Button-Placeholder,
+.VPNavBarSearch .DocSearch-Button-Keys { display: none; }
+@media (max-width: 760px) {
+  :root { --site-header-gap: 18px; }
+  .VPNavBar .wrapper { padding: 0 18px !important; }
+}
+@media (max-width: 767px) {
+  .VPLocalNav.fixed { display: none !important; }
+  .VPNav { position: sticky !important; top: 0; }
+  .VPNavBar { pointer-events: auto !important; }
+  .VPNavBar:not(.screen-open) { transition: transform 320ms var(--songhai-ease-out) !important; }
+  .mobile-nav-hidden .VPNav { pointer-events: none; }
+  .mobile-nav-hidden .VPNavBar { pointer-events: none !important; }
+  .mobile-nav-hidden .VPNavBar:not(.screen-open) {
+    transform: translate3d(0, -100%, 0);
+    transition: transform 190ms cubic-bezier(0.4, 0, 1, 1) !important;
+  }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .VPNavBar:not(.screen-open),
+  .mobile-nav-hidden .VPNavBar:not(.screen-open) { transition: none !important; }
+}
+.VPLocalNav,
+.VPSidebar { background: var(--songhai-ink) !important; }
+
+.chat-nav-avatar {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: url("/images/dialog-avatar.png") center / cover no-repeat;
+  font-size: 0;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.VPSidebar {
+  border-right: 0;
+}
+
+/* A compact reading index: topic first, date as supporting information. */
+.VPSidebar .group {
+  width: 100%;
+  padding-top: 0;
+}
+
+.VPSidebar .VPSidebarItem.level-0 {
+  padding-bottom: 0;
+}
+
+.VPSidebar .VPSidebarItem.level-0 > .item {
+  padding: 0 0 .9rem;
+  margin-bottom: .25rem;
+}
+
+.VPSidebar .VPSidebarItem.level-0 > .item .text {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  padding: 0;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.journal-side-heading small {
+  margin-left: .55rem;
+  color: var(--vp-c-text-3);
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .13em;
+}
+
+.journal-side-count {
+  margin-left: auto;
+  color: var(--vp-c-text-3);
+  font-size: .68rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+}
+
+
+
+.VPSidebar .VPSidebarItem.level-1 > .item > .indicator {
+  display: none;
+}
+
+.VPSidebar .VPSidebarItem.level-1 > .item > .link {
+  padding: .7rem 0;
+}
+
+.VPSidebar .VPSidebarItem.level-1 > .item > .link > .text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .28rem;
+  min-width: 0;
+  padding: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.journal-side-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  color: var(--vp-c-text-3);
+  font-size: .64rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .09em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.journal-side-pillar::before {
+  content: "·";
+  margin-right: .4rem;
+}
+
+.journal-side-title {
+  color: var(--vp-c-text-2);
+  transition: color var(--songhai-motion-base) var(--songhai-ease-out);
+  font-size: .89rem;
+  font-weight: 500;
+  line-height: 1.42;
+  overflow-wrap: anywhere;
+}
+
+/* The bar itself is SidebarMarker.vue, which glides between items. */
+.VPSidebar nav.nav { position: relative; }
+/* The active item keeps exactly the same box as every other item: highlighting
+   must never change how a title wraps. */
+
+.VPSidebar .VPSidebarItem.level-1.is-active .journal-side-title,
+.VPSidebar .VPSidebarItem.level-1 > .item > .link:hover .journal-side-title {
+  color: var(--vp-c-text-1);
+}
+
+.VPDocFooter .journal-side-meta {
+  display: none;
+}
+
+.VPDocFooter .journal-side-title {
+  color: inherit;
+  font-size: inherit;
+}
+
+.VPDoc .container { max-width: 1320px !important; }
+.VPDoc .content { max-width: 760px !important; }
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  color: var(--songhai-cream);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.vp-doc h1 {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  line-height: 0.98;
+}
+
+.vp-doc h2 {
+  margin-top: 3.5rem;
+  padding-top: 0;
+  border-top: 0;
+  border-bottom: 0;
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+}
+
+.vp-doc h3 { font-size: 1.35rem; }
+.vp-doc p,
+.vp-doc li {
+  color: var(--vp-c-text-2);
+  line-height: 1.85;
+}
+
+.vp-doc a {
+  color: var(--songhai-cream);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--vp-c-text-3);
+  transition:
+    color var(--songhai-motion-base) var(--songhai-ease-out),
+    text-decoration-color var(--songhai-motion-base) var(--songhai-ease-out),
+    text-underline-offset var(--songhai-motion-base) var(--songhai-ease-out);
+}
+
+/* The underline darkens and settles closer to the word, rather than snapping. */
+.vp-doc a:hover {
+  color: var(--vp-c-text-1);
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.16em;
+}
+
+.vp-doc div[class*="language-"],
+.vp-doc .custom-block,
+.vp-doc table { border-radius: var(--songhai-radius); }
+
+.vp-doc div[class*="language-"] {
+  overflow: hidden;
+  border: 0;
+  background: var(--vp-code-block-bg);
+}
+
+.vp-doc table,
+.vp-doc .custom-block {
+  overflow: hidden;
+}
+
+.vp-doc img:not(.VPImage) {
+  border-radius: var(--songhai-radius);
+}
+
+.vp-doc :not(pre) > code {
+  border-radius: var(--songhai-radius-sm);
+}
+
+.vp-doc div[class*="language-"] pre {
+  background: transparent !important;
+}
+
+.vp-doc .custom-block {
+  border-color: transparent;
+  background: var(--vp-c-bg-soft);
+}
+
+.VPFooter {
+  border-top-color: var(--songhai-line) !important;
+  background: var(--songhai-ink) !important;
+}
+
+.VPDocFooter .pager-link {
+  border-radius: var(--songhai-radius) !important;
+}
+
+/* Blog articles: a 700px reading column. Desktop keeps VitePress's two indexes —
+   all articles on the left, this article's outline on the right (≥1280px). Below
+   that, the outline's extra "On this page" bar under the nav is not shown. */
+.blog-article-page .VPLocalNav { display: none !important; }
+/* Card view puts the deck alone in the page: both side panels go, and the
+   content loses the sidebar's padding so the deck centres. The panels slide out
+   and back on the text ⇄ cards switch (see "Text ⇄ cards" at the end of this file). */
+.blog-article-page.is-card-view .VPDoc .aside,
+.blog-article-page.is-card-view .VPSidebar { display: none !important; }
+.blog-article-page.is-card-view .VPContent.has-sidebar { padding-left: 0 !important; padding-right: 0 !important; }
+/* …and the nav stops drawing the sidebar's corner: one continuous rule. */
+.blog-article-page.is-card-view .VPNavBarTitle.has-sidebar .title { border-bottom-color: transparent; }
+.blog-article-page.is-card-view .VPNavBar.has-sidebar .divider { padding-left: 0 !important; }
+
+/* The outline as a quiet list: no rail, the active heading in full ink. */
+/* No rail. The active heading is marked by a short bar that glides between
+   headings (VitePress positions it; we only restyle and retime it). */
+/* No inset for the bar: the outline text lines up with its title. The scroll
+   container reaches 12px further left (and pads it back) so the bar can sit in
+   that gutter without being clipped and without moving any text. */
+.blog-article-page .VPDoc .aside-container { width: 236px; margin-left: -12px; padding-left: 12px; }
+.blog-article-page .VPDocAsideOutline .content { border-left: 0; padding-left: 0; }
+.blog-article-page .VPDocAsideOutline .outline-marker {
+  left: -12px;
+  width: 2px;
+  height: 14px;
+  margin-top: 1.5px; /* centre on the heading's first line at our line-height */
+  background-color: var(--vp-c-text-1);
+  transition:
+    top var(--songhai-motion-slow) var(--songhai-ease-out),
+    opacity var(--songhai-motion-base) ease;
+}
+.blog-article-page .VPDocAsideOutline .outline-title {
+  color: var(--vp-c-text-1);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+/* Chinese headings run long; wrap them instead of cutting them off with "…". */
+.blog-article-page .VPDocAsideOutline .outline-link {
+  padding: 5px 0;
+  overflow: visible;
+  white-space: normal;
+  line-height: 1.5;
+  color: var(--vp-c-text-3);
+  transition: color var(--songhai-motion-base) var(--songhai-ease-out);
+}
+.blog-article-page .VPDocAsideOutline .outline-link:hover,
+.blog-article-page .VPDocAsideOutline .outline-link.active { color: var(--vp-c-text-1); }
+
+.blog-article-page .VPDoc .content,
+.blog-article-page .VPDoc .content-container { max-width: 700px !important; }
+.blog-article-page .VPDoc .content { padding: 0 !important; }
+
+/* Give the article a quiet ending before its next-post link. The pull zone
+   remains the final band, so the end-of-page gesture still starts there. */
+.blog-article-page { --pull-zone: 64px; --post-end-space: 56px; }
+.blog-article-page .VPDoc { padding-top: var(--pull-zone) !important; padding-bottom: 0 !important; }
+.blog-article-page .vp-doc > div > :last-child { margin-bottom: 0 !important; }
+.blog-article-page .VPFooter { display: none; }
+@media (min-width: 960px) {
+  .blog-article-page { --pull-zone: 80px; --post-end-space: 72px; }
+  .blog-article-page .VPDoc { padding: var(--pull-zone) 48px 0 !important; }
+}
+
+.blog-article-page .vp-doc p,
+.blog-article-page .vp-doc li { font-size: 1.0625rem; line-height: 1.8; }
+.blog-article-page .vp-doc h2 { margin-top: 3.25rem; font-size: clamp(1.45rem, 2.4vw, 1.75rem); font-weight: 600; letter-spacing: -.02em; }
+.blog-article-page .vp-doc h3 { font-weight: 600; }
+/* No "#" beside headings: the outline already links every section. The
+   headings keep their ids, so the outline, search hits and #links still work. */
+.blog-article-page .vp-doc .header-anchor { display: none; }
+.blog-article-page .vp-doc h3 { margin-top: 2.25rem; font-size: 1.2rem; }
+
+/* Media supports the text: softened, never full-bleed. Images without an Obsidian
+   size (![[x.png]]) get a height cap; an explicit |640 or |640x480 is honoured as
+   written, only shrunk to fit the column. */
+.blog-article-page .vp-doc img {
+  display: block;
+  max-width: 100%;
+  margin: 2.25rem auto;
+  border-radius: var(--songhai-radius-sm);
+  object-fit: contain;
+  opacity: .92;
+  transition: opacity var(--songhai-motion-slow) var(--songhai-ease-out);
+}
+/* Set by Layout.vue only while an image is still downloading. */
+.blog-article-page .vp-doc img.is-loading { opacity: 0; }
+.blog-article-page .vp-doc img:not([width]):not([height]) {
+  width: auto;
+  height: auto;
+  max-height: min(62vh, 520px);
+}
+.blog-article-page .vp-doc img[width]:not([height]) { height: auto; }
+.blog-article-page .vp-doc img:hover { opacity: 1; }
+.blog-article-page .vp-doc p:has(> img:only-child) { margin: 0; }
+.blog-article-page .vp-doc p:has(> .image-caption) { margin: 2.25rem 0; }
+.blog-article-page .vp-doc p:has(> .image-caption) > img { margin: 0 auto; }
+.blog-article-page .vp-doc .image-caption {
+  display: block;
+  margin-top: .7rem;
+  color: var(--vp-c-text-3);
+  font-size: .8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+html[lang^="zh"] .blog-article-page .vp-doc .image-caption::before { content: "图："; }
+.blog-article-page .vp-doc video,
+.blog-article-page .vp-doc iframe { max-width: 100%; max-height: min(62vh, 520px); margin: 2.25rem auto; display: block; }
+
+/* Articles pull on into their neighbours (ArticlePull.vue), so the footer's pager and
+   last-updated line give way to it. */
+.blog-article-page .VPDocFooter { display: none; }
+/* ArticlePull.vue does its own pull past both ends; the browser's rubber-band would
+   double it. */
+html.pull-to-next,
+html.pull-to-next body { overscroll-behavior-y: none; }
+.blog-article-page .VPDocFooter .prev-next { border-top: 0; padding-top: 3rem; }
+.blog-article-page .VPDocFooter .pager-link { border: 0 !important; padding-left: 0; padding-right: 0; }
+.blog-article-page .VPDocFooter .pager-link .title { color: var(--vp-c-text-2); transition: color var(--songhai-motion-base) var(--songhai-ease-out); }
+.blog-article-page .VPDocFooter .pager-link .desc { color: var(--vp-c-text-3); }
+.blog-article-page .VPDocFooter .pager-link:hover .title { color: var(--vp-c-text-1); }
+.VPNavBarMenuLink,
+.VPSidebarItem .text { transition: color var(--songhai-motion-base) var(--songhai-ease-out) !important; }
+.blog-article-page .VPDocFooter .pager-link.next { text-align: right; }
+
+html:not(.dark) .VPNavBarTitle .logo {
+  filter: none;
+}
+
+.profile-header {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.75fr) 1.25fr;
+  align-items: end;
+  gap: clamp(2rem, 6vw, 5rem);
+  margin: 0 0 4rem;
+}
+
+.profile-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--songhai-radius) !important;
+  box-shadow: none !important;
+  object-fit: cover;
+}
+
+.profile-info h1 { margin: 0 0 0.75rem; }
+.profile-info .subtitle {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+  .profile-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    text-align: left;
+  }
+
+  .profile-photo { aspect-ratio: 1 / 1; }
+}
+
+/* The blog opens as an article index; Frank's portfolio lives at songhai.site. */
+.journal-index {
+  width: min(100% - 3rem, 760px);
+  margin: 0 auto;
+  padding: clamp(4rem, 9vw, 8rem) 0 7rem;
+}
+
+.journal-intro {
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.journal-kicker {
+  margin: 0 0 1.6rem;
+  color: var(--vp-c-text-3);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+}
+
+.journal-intro h1 {
+  margin: 0;
+  font-size: clamp(3.4rem, 9vw, 6.4rem);
+  font-weight: 400;
+  letter-spacing: -.075em;
+  line-height: 1;
+}
+
+.journal-intro > p:not(.journal-kicker) {
+  margin: 1.5rem 0 0;
+  color: var(--vp-c-text-2);
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.journal-entries {
+  border-top: 1px solid var(--songhai-line);
+}
+
+.blog-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin: 1.6rem 0 0;
+}
+
+.blog-filter button {
+  padding: .55rem .9rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  font: 500 .9rem/1.3 var(--songhai-font);
+  cursor: pointer;
+  transition: background-color var(--songhai-motion-fast) ease, color var(--songhai-motion-fast) ease;
+}
+
+.blog-filter button:hover { color: var(--vp-c-text-1); background: var(--vp-c-bg-soft); }
+.blog-filter button.is-active { color: var(--vp-c-bg); background: var(--vp-c-text-1); }
+.blog-filter button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
+.journal-intro .home-search { margin-top: 1.5rem; }
+.journal-entry[hidden] { display: none; }
+
+.journal-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--songhai-line);
+  color: var(--vp-c-text-1);
+}
+
+.journal-entry-link {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--songhai-motion-fast) ease;
+}
+
+.journal-entry-link:hover,
+.journal-entry-link:focus-visible {
+  color: var(--vp-c-text-1);
+}
+
+.journal-entry-link:focus-visible,
+.journal-entry-date {
+  color: var(--vp-c-text-3);
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-entry-title {
+  min-width: 0;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.journal-entry-type { margin-right: .55rem; color: var(--vp-c-text-2); }
+
+/* While the home search has a query, its results take the list's place. */
+.journal-index.is-searching .journal-entries { display: none; }
+
+.journal-empty {
+  color: var(--vp-c-text-2);
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 640px) {
+  .journal-index { width: min(100% - 2.25rem, 760px); padding-top: 4rem; }
+  .journal-entry { gap: .45rem; }
+  .journal-entry-link { grid-template-columns: minmax(0, 1fr); gap: .35rem .75rem; }
+  .journal-entry-date { grid-column: 1 / -1; }
+}
+
+/* ── VitePress local search, in the site's own voice ─────────────────────────
+   The component and its behaviour are VitePress's; only the look changes. No
+   outlines anywhere: the field and the selected result are tinted surfaces, the
+   match is a soft wash rather than a black block, and the panel rises in. */
+:root {
+  --vp-local-search-bg: var(--vp-c-bg-elv);
+  /* Opaque on purpose: VitePress fades long excerpts with gradients to this colour,
+     and a translucent colour would stack into a visible band. */
+  --vp-local-search-result-bg: var(--vp-c-bg-elv);
+  --vp-local-search-result-border: transparent;
+  --vp-local-search-result-selected-bg: color-mix(in srgb, var(--vp-c-text-1) 7%, var(--vp-c-bg-elv));
+  --vp-local-search-result-selected-border: transparent;
+  --vp-local-search-highlight-bg: color-mix(in srgb, var(--vp-c-text-1) 18%, transparent);
+  --vp-local-search-highlight-text: var(--vp-c-text-1);
+}
+.VPLocalSearchBox .backdrop {
+  background: rgba(0, 0, 0, .42);
+  backdrop-filter: blur(6px);
+  animation: search-fade 220ms ease both;
+}
+.VPLocalSearchBox .shell {
+  width: min(100vw - 48px, 720px);
+  margin-top: 12vh;
+  padding: 14px;
+  gap: 10px;
+  border-radius: var(--songhai-radius);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .55);
+  animation: search-rise 320ms var(--songhai-ease-out) both;
+}
+.VPLocalSearchBox .shell .search-bar {
+  height: 52px;
+  padding: 0 10px 0 14px;
+  border: 0;
+  border-radius: var(--songhai-radius-sm);
+  background: var(--vp-c-bg);
+}
+.VPLocalSearchBox .shell .search-input { font-size: 1rem; color: var(--vp-c-text-1); }
+.VPLocalSearchBox .shell .search-input::placeholder { color: var(--vp-c-text-3); }
+.VPLocalSearchBox .shell .search-actions button { color: var(--vp-c-text-3); transition: color var(--songhai-motion-fast) ease; }
+.VPLocalSearchBox .shell .search-actions button:hover,
+.VPLocalSearchBox .shell .toggle-layout-button.detailed-list { color: var(--vp-c-text-1); }
+.VPLocalSearchBox .shell .results { gap: 2px; }
+/* VitePress only feeds the result colour to the excerpt fades; give the row
+   itself that surface so the selected result actually reads as selected. */
+.VPLocalSearchBox .shell .result {
+  border: 0;
+  border-radius: var(--songhai-radius-sm);
+  background: var(--vp-local-search-result-bg);
+  transition: background-color var(--songhai-motion-fast) ease;
+}
+.VPLocalSearchBox .shell .result > div { margin: 12px 14px; }
+.VPLocalSearchBox .shell .result .title { color: var(--vp-c-text-2); font-weight: 400; }
+.VPLocalSearchBox .shell .result .title.main { color: var(--vp-c-text-1); font-weight: 500; }
+.VPLocalSearchBox .shell .result .title-icon { color: var(--vp-c-text-3); }
+.VPLocalSearchBox .shell .result.selected .title-icon { color: var(--vp-c-text-2); }
+/* Same as the home search: wash only the middle band of the glyphs. */
+.VPLocalSearchBox .shell .result mark {
+  padding: 0 .08em;
+  border-radius: 0;
+  background: linear-gradient(transparent 27%, var(--vp-local-search-highlight-bg) 27%, var(--vp-local-search-highlight-bg) 85%, transparent 85%);
+  color: var(--vp-local-search-highlight-text);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.VPLocalSearchBox .shell .excerpt { color: var(--vp-c-text-3); font-size: .85rem; }
+.VPLocalSearchBox .shell .excerpt img { border-radius: var(--songhai-radius-sm); }
+.VPLocalSearchBox .shell .no-results { color: var(--vp-c-text-3); padding: 20px 14px; }
+.VPLocalSearchBox .shell .search-keyboard-shortcuts { color: var(--vp-c-text-3); padding: 2px 4px 0; }
+.VPLocalSearchBox .shell .search-keyboard-shortcuts kbd {
+  border: 0;
+  box-shadow: none;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+}
+@media (max-width: 767px) {
+  .VPLocalSearchBox .shell { width: 100vw; margin-top: 0; border-radius: 0; box-shadow: none; }
+}
+@keyframes search-fade { from { opacity: 0; } }
+@keyframes search-rise { from { opacity: 0; transform: translate3d(0, 10px, 0) scale(.985); } }
+
+/* ── Text ⇄ cards (Layout.vue sets view-<phase> on the layout root) ──────────
+   What is on screen leaves (220ms), then the other view arrives (480ms). The
+   panels move toward and back from their own edges; the article and the deck
+   only fade (opacity, no transform — the deck is position: fixed inside the
+   article column, and a transform there would become its containing block).
+   Real elements, real stacking: the nav stays above the sidebar throughout. */
+@media (min-width: 960px) {
+  .view-leaving-text .VPSidebar { animation: panel-out-left 220ms cubic-bezier(0.4, 0, 1, 1) both; }
+  .view-entering-text .VPSidebar { animation: panel-in-left 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+}
+.view-leaving-text .VPDoc .aside { animation: panel-out-right 220ms cubic-bezier(0.4, 0, 1, 1) both; }
+.view-entering-text .VPDoc .aside { animation: panel-in-right 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.view-leaving-text .VPDoc .content-container,
+.view-leaving-cards .card-deck { animation: view-fade-out 220ms ease-in both; }
+.view-entering-text .VPDoc .content-container { animation: view-fade-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes view-fade-out { to { opacity: 0; } }
+@keyframes view-fade-in { from { opacity: 0; } }
+@keyframes panel-out-left { to { opacity: 0; transform: translateX(-48px); } }
+@keyframes panel-in-left { from { opacity: 0; transform: translateX(-48px); } }
+@keyframes panel-out-right { to { opacity: 0; transform: translateX(48px); } }
+@keyframes panel-in-right { from { opacity: 0; transform: translateX(48px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

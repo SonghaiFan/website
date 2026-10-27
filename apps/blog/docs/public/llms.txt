@@ -1,0 +1,14 @@
+# Frank / Blog
+
+> Public writing about data, interfaces, AI, and interaction.
+
+## Public content
+
+- [English blog](https://blog.songhai.site/)
+- [中文博客](https://blog.songhai.site/zh/)
+- [Public content index](https://blog.songhai.site/api/search-index.json): JSON records include each note and project's type, readable URL, Markdown URL, and Markdown content.
+- [Sitemap](https://blog.songhai.site/sitemap.xml): canonical public HTML pages.
+
+## Reading a post
+
+Article pages are available as readable HTML. Each article also has a sibling `.md` URL and declares that URL with `rel="alternate"` and `type="text/markdown"` in its HTML head.

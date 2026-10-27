@@ -1,0 +1,13 @@
+node_modules/
+.stage/
+.stage-dev-refresh/
+.site-dist/
+.wrangler/
+.env*
+!.env.example
+.dev.vars*
+.DS_Store
+.playwright-cli/
+artifacts/
+dist/
+output/
