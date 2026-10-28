@@ -31,7 +31,9 @@ export function mountComments(container, { term, lang = 'en', theme = 'light' })
     category: engagement.category, categoryId: engagement.categoryId,
     mapping: 'specific', term, strict: '1',
     reactionsEnabled: '1', emitMetadata: '0', inputPosition: 'top',
-    theme, lang, loading: 'lazy',
+    // Callers already defer mounting until the guestbook opens or the article
+    // ends. Load the iframe immediately once the reader reaches that point.
+    theme, lang, loading: 'eager',
   });
   container.replaceChildren(script);
   return () => container.replaceChildren();

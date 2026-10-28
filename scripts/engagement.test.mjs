@@ -45,7 +45,7 @@ test('comments use strict stable keys and update only the trusted Giscus frame',
   assert.deepEqual(children[0].dataset, {
     repo: engagement.repo, repoId: engagement.repoId, category: engagement.category, categoryId: engagement.categoryId,
     mapping: 'specific', term: 'blog:project:ttng', strict: '1', reactionsEnabled: '1', emitMetadata: '0',
-    inputPosition: 'top', theme: 'noborder_dark', lang: 'zh-CN', loading: 'lazy',
+    inputPosition: 'top', theme: 'noborder_dark', lang: 'zh-CN', loading: 'eager',
   });
   updateComments(container, { theme: 'noborder_light' });
   assert.deepEqual(message, [{ giscus: { setConfig: { theme: 'noborder_light' } } }, 'https://giscus.app']);
