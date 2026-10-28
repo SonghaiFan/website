@@ -49,17 +49,12 @@ onUnmounted(() => { revision++; observer?.disconnect(); cleanup?.(); });
 <template>
   <section class="article-comments" :aria-label="chinese ? '留言' : 'Comments'">
     <h2>{{ chinese ? '留言' : 'Comments' }}</h2>
-    <p>{{ chinese ? '聊聊你的想法。' : 'Join the conversation.' }}</p>
     <div ref="host" class="giscus" />
-    <a href="https://github.com/SonghaiFan/website/discussions" target="_blank" rel="noopener noreferrer">{{ chinese ? '在 GitHub 查看讨论 ↗' : 'View discussions on GitHub ↗' }}</a>
   </section>
 </template>
 
 <style scoped>
 .article-comments { margin-top: 72px; padding-top: 0; }
 h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
-p, a { font-size: 14px; color: var(--vp-c-text-2); }
-p { margin: 6px 0 28px; }
-.giscus { min-height: 180px; }
-a { display: inline-block; margin-top: 12px; font-size: 12px; }
+.giscus { min-height: 180px; margin-top: 24px; }
 </style>
