@@ -24,7 +24,7 @@ function observe() {
       const resolvedTheme = await theme();
       if (current !== revision || !host.value) return;
       cleanup = mountComments(host.value, {
-        term: frontmatter.value.commentTerm, lang: language(), theme: resolvedTheme,
+        term: frontmatter.value.commentTerm, title: frontmatter.value.commentTitle || frontmatter.value.title, lang: language(), theme: resolvedTheme,
       });
     } catch (error) { console.warn('[comments]', error); }
   };

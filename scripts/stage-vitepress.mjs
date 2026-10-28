@@ -103,9 +103,13 @@ const collect = (collectionLocales) => collectionLocales.flatMap((locale) => {
     .map((entry) => {
       const file = path.join(locale.source, entry.name)
       const parsed = matter(fs.readFileSync(file, "utf8"))
-      const slug = entry.name.slice(0, -3)
+      const sourceName = entry.name.slice(0, -3)
+      const declaredSlug = parsed.data.slug
+      if (declaredSlug != null && (typeof declaredSlug !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(declaredSlug))) throw new Error(`Invalid slug in ${file}: use lowercase English words separated by hyphens`)
+      if (locale.kind !== "project" && !declaredSlug && /[^\x00-\x7f]/.test(sourceName)) throw new Error(`Missing slug in ${file}: add a stable English slug`)
+      const slug = declaredSlug || sourceName
       const rawDate = parsed.data.date
-      const slugDate = slug.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d{2})-(\d{2})-(\d{2}))?(?:-|$)/)
+      const slugDate = sourceName.match(/^(\d{4}-\d{2}-\d{2})(?:-(\d{2})-(\d{2})-(\d{2}))?(?:-|$)/)
       const inferredSlugDate = slugDate
         ? `${slugDate[1]}T${slugDate[2] || "00"}:${slugDate[3] || "00"}:${slugDate[4] || "00"}Z`
         : null
@@ -131,21 +135,21 @@ const collect = (collectionLocales) => collectionLocales.flatMap((locale) => {
       // public writing, regardless of its filename or an older `type: daily`.
       const type = locale.kind === "project" ? "project" : "note"
       const firstHeading = parsed.content.match(/^#\s+(.+)\s*$/m)?.[1]?.trim()
-      const titleFromHeading = slugDate && firstHeading && firstHeading !== slug ? firstHeading : null
+      const titleFromHeading = slugDate && firstHeading && firstHeading !== sourceName ? firstHeading : null
       return {
         kind: locale.kind || "post",
         type,
         order: Number(parsed.data.order ?? 999),
-        file, locale: locale.name, output: path.join(locale.output, entry.name),
+        file, locale: locale.name, output: path.join(locale.output, `${slug}.md`),
         slug, url: `${locale.urlPrefix}${slug}`, parsed,
-        title: String(parsed.data.title || titleFromHeading || slug),
+        title: String(parsed.data.title || titleFromHeading || sourceName),
         titleFromHeading: Boolean(!parsed.data.title && titleFromHeading),
         date: date?.toISOString() ?? null,
         displayDate,
         modifiedAt: modifiedAt.toISOString(),
         tags: Array.isArray(parsed.data.tags) ? parsed.data.tags.map(String) : [],
         pillar: pillar || null,
-        translationKey: typeof parsed.data.translationKey === "string" ? parsed.data.translationKey.trim()
+        translationKey: locale.kind !== "project" && declaredSlug ? declaredSlug : typeof parsed.data.translationKey === "string" ? parsed.data.translationKey.trim()
           // A project's Chinese and English pages share a file name, which pairs them.
           : locale.kind === "project" ? `project:${slug}` : "",
       }
@@ -154,6 +158,11 @@ const collect = (collectionLocales) => collectionLocales.flatMap((locale) => {
 const posts = collect(locales)
 const projectPages = collect(projectLocales)
 const pages = [...posts, ...projectPages]
+const routeKeys = new Set()
+for (const page of pages) {
+  if (routeKeys.has(page.url)) throw new Error(`Duplicate slug for ${page.locale}: ${page.slug}`)
+  routeKeys.add(page.url)
+}
 const privateNotes = ["Daily", "Notes"].flatMap((folder) =>
   walk(path.join(vaultRoot, folder)).filter((file) => file.endsWith(".md")))
 
@@ -507,7 +516,8 @@ for (const post of pages) {
   const pair = translations.get(post.translationKey)
   const other = pair?.[post.locale === "zh" ? "en" : "zh"]
   const data = { ...post.parsed.data, title: post.title, blogPost: true, type: post.type }
-  data.commentTerm = `blog:${post.translationKey || post.url}`
+  data.commentTerm = `blog:${post.translationKey || post.slug}`
+  data.commentTitle = post.title
   delete data.updated
   if (post.pillar) data.pillar = post.pillar
   if (post.kind === "project") {

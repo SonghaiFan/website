@@ -351,3 +351,28 @@ test("rejects unsupported card pillars", (t) => {
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, /Invalid pillar/)
 })
+
+test("semantic slugs keep source titles and wikilinks while sharing translated discussions", (t) => {
+  const { site, write, run } = fixture(t)
+  write("Blog/中文标题.md", '---\nslug: semantic-note\ndate: 2026-10-01\n---\n正文 [[另一篇]]\n')
+  write("Blog/另一篇.md", '---\nslug: other-note\ndate: 2026-10-02\n---\n第二篇\n')
+  write("Blog/en/English title.md", '---\nslug: semantic-note\ndate: 2026-10-01\n---\nEnglish text\n')
+  const result = run()
+  assert.equal(result.status, 0, result.stderr)
+  const article = fs.readFileSync(path.join(site, ".stage/docs/zh/blog/posts/semantic-note.md"), "utf8")
+  assert.match(article, /title: 中文标题/)
+  assert.match(article, /commentTitle: 中文标题/)
+  assert.match(article, /commentTerm: ['"]?blog:semantic-note/)
+  assert.match(article, /translationUrl: \/blog\/posts\/semantic-note/)
+  assert.match(article, /\[另一篇\]\(\/zh\/blog\/posts\/other-note\)/)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/zh/blog/posts/中文标题.md")), false)
+})
+
+test("rejects duplicate or malformed semantic slugs", (t) => {
+  const { write, run } = fixture(t)
+  write("Blog/First.md", '---\nslug: same-key\n---\nFirst\n')
+  write("Blog/Second.md", '---\nslug: same-key\n---\nSecond\n')
+  assert.match(run().stderr, /Duplicate slug/)
+  write("Blog/Second.md", '---\nslug: Invalid Key\n---\nSecond\n')
+  assert.match(run().stderr, /Invalid slug/)
+})

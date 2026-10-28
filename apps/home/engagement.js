@@ -35,7 +35,7 @@ export async function loadCommentTheme(dark = false) {
   return commentTheme(dark);
 }
 
-export function mountComments(container, { term, lang = 'en', theme = commentTheme() }) {
+export function mountComments(container, { term, title, lang = 'en', theme = commentTheme() }) {
   const script = document.createElement('script');
   script.src = `${commentService()}/client.js`;
   script.async = true;
@@ -43,7 +43,7 @@ export function mountComments(container, { term, lang = 'en', theme = commentThe
   Object.assign(script.dataset, {
     repo: engagement.repo, repoId: engagement.repoId,
     category: engagement.category, categoryId: engagement.categoryId,
-    mapping: 'specific', term, strict: '1',
+    mapping: 'specific', term, discussionTitle: title || term, strict: '1',
     reactionsEnabled: '0', emitMetadata: '0', inputPosition: 'top',
     // Callers already defer mounting until the guestbook opens or the article
     // ends. Load the iframe immediately once the reader reaches that point.
@@ -75,7 +75,7 @@ if (typeof document !== 'undefined') {
         mounted = true;
         try {
           const theme = await loadCommentTheme();
-          mountComments(container, { term: 'home:guestbook', lang: language(), theme });
+          mountComments(container, { term: 'home:guestbook', title: '首页留言', lang: language(), theme });
         } catch (error) {
           mounted = false;
           console.warn('[comments]', error);

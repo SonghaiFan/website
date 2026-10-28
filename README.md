@@ -69,3 +69,7 @@ Giscus stores public comments in **SonghaiFan/website → Discussions → Announ
 Public embed IDs live in `apps/home/engagement.js`, shared by Home and the Blog theme. Article translations share a discussion when they have the same translation key; otherwise the stable public URL path identifies the thread. `giscus.json` allows only the existing domains and the two local preview origins. Moderate replies in GitHub Discussions. Local verification does not post test comments.
 
 The shared widget owns its component layout and the named `songhai_light` / `songhai_dark` themes. Home and Blog use the service's `/client.js`; Blog appearance changes use a message addressed only to the comments origin. On loopback, both previews use `http://127.0.0.1:4181` from the separate comments checkout. See its `SONGHAI.md` for App setup, runtime, deployment and rollback. No App secrets belong in this website repository.
+
+### Blog URL keys
+
+Ordinary Blog notes keep their Chinese filenames and titles and declare a stable English `slug` in frontmatter, for example `slug: digital-asset-cleanup`. Use lowercase letters, numbers, and hyphens. Paired translations share the same slug. Published URLs and comment keys use this value; changing the title does not change either. Project pages retain their existing paths. Duplicate and malformed slugs fail the build.
