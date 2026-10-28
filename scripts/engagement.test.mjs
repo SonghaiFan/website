@@ -23,6 +23,7 @@ test('analytics runs only on the two production hosts and installs once', () => 
     startAnalytics(doc, host);
     startAnalytics(doc, host);
     assert.equal(doc.scripts.length, 1);
+    assert.equal(doc.scripts[0].type, 'module');
     const beacon = JSON.parse(doc.scripts[0].dataset.cfBeacon);
     assert.equal(beacon.token, engagement.analytics[host]);
     assert.equal(beacon.spa, true);

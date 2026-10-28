@@ -14,6 +14,7 @@ export function startAnalytics(doc = document, hostname = location.hostname) {
   const token = engagement.analytics[hostname];
   if (!token || doc.querySelector('script[data-songhai-analytics]')) return;
   const script = doc.createElement('script');
+  script.type = 'module';
   script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
   script.defer = true;
   script.dataset.songhaiAnalytics = '';
