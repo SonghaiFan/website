@@ -45,6 +45,7 @@ function applyLanguage(next, remember = false) {
   language = next === 'zh' ? 'zh' : 'en';
   const chinese = language === 'zh';
   document.documentElement.lang = chinese ? 'zh-CN' : 'en';
+  document.dispatchEvent(new CustomEvent('songhai:language'));
   document.title = chinese ? '范松海 · 聊聊作品与想法' : 'Songhai Fan · A conversation';
   // These fragments are trusted static markup from index.html, never user input.
   translatedNodes.forEach(([node, english]) => { node.innerHTML = chinese ? node.dataset.zh : english; });

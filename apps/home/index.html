@@ -14,8 +14,10 @@
   <meta name="twitter:title" content="Songhai Fan · A conversation">
   <meta name="twitter:description" content="A conversation with Songhai Fan about projects, research, and making things.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/site.css?v=20261028-comments">
   <script src="/app.js" defer></script>
+  <script type="module" src="/engagement.js"></script>
+  <meta name="giscus:backlink" content="https://songhai.site/">
   <title>Songhai Fan · A conversation</title>
 </head>
 <body>
@@ -25,6 +27,7 @@
       <button data-zh="重新开始" id="reset" class="reset-button" type="button" hidden>Start over</button>
       <button id="language-toggle" class="reset-button" type="button" aria-label="切换到中文">中文</button>
       <a data-zh="博客" class="journal-link" href="https://blog.songhai.site/">Blog</a>
+      <button data-zh="留言" id="open-guestbook" class="reset-button" type="button">Guestbook</button>
     </nav>
   </header>
 
@@ -335,6 +338,13 @@
     </filter>
   </svg>
 
+  <dialog id="guestbook" class="guestbook-dialog" aria-labelledby="guestbook-title">
+    <button class="guestbook-close reset-button" type="button" data-zh="关闭" aria-label="Close guestbook" data-zh-aria-label="关闭留言板">Close</button>
+    <h2 id="guestbook-title" data-zh="留言">Guestbook</h2>
+    <p data-zh="用 GitHub 登录，留下你的想法。留言会公开显示。">Sign in with GitHub to leave a message. Comments are public.</p>
+    <div class="giscus"></div>
+    <a href="https://github.com/SonghaiFan/website/discussions" target="_blank" rel="noopener noreferrer" data-zh="在 GitHub 查看讨论 ↗">View discussions on GitHub ↗</a>
+  </dialog>
   <noscript><p class="noscript">JavaScript is needed for the conversation. You can still visit the <a href="https://blog.songhai.site/">journal</a> and <a href="https://blog.songhai.site/projects/">projects</a>.</p></noscript>
 </body>
 </html>

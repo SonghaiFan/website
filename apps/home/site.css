@@ -34,6 +34,21 @@
 * {
   box-sizing: border-box;
 }
+.guestbook-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 28px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.guestbook-dialog::backdrop { background: rgb(33 24 17 / 35%); }
+.guestbook-dialog h2 { margin: 0 0 12px; font-size: 24px; font-weight: 500; }
+.guestbook-dialog p, .guestbook-dialog > a { font-size: 14px; color: var(--ink-2); }
+.guestbook-close { float: right; }
+.guestbook-dialog .giscus { min-height: 220px; margin-top: 24px; }
 html {
   min-height: 100%;
   scroll-behavior: smooth;

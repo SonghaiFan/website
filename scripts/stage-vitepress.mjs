@@ -507,6 +507,7 @@ for (const post of pages) {
   const pair = translations.get(post.translationKey)
   const other = pair?.[post.locale === "zh" ? "en" : "zh"]
   const data = { ...post.parsed.data, title: post.title, blogPost: true, type: post.type }
+  data.commentTerm = `blog:${post.translationKey || post.url}`
   delete data.updated
   if (post.pillar) data.pillar = post.pillar
   if (post.kind === "project") {
@@ -558,6 +559,7 @@ for (const post of pages) {
     "article:published_time", "article:modified_time",
   ])
   data.head = [
+    ["meta", { name: "giscus:backlink", content: canonicalUrl }],
     ...pageHead.filter((entry) => {
       const [tag, attributes] = entry || []
       return !(

@@ -7,6 +7,7 @@ import SiteControls from "./SiteControls.vue";
 import SidebarMarker from "./SidebarMarker.vue";
 import PostHeader from "./PostHeader.vue";
 import ArticlePull from "./ArticlePull.vue";
+import Comments from "./Comments.vue";
 import { pullState } from "./pull-state.js";
 
 const { Layout } = DefaultTheme;
@@ -171,6 +172,7 @@ watch(() => lang.value, (value) => {
       <SiteControls class="nav-site-controls" />
     </template>
     <template #doc-after>
+      <Comments v-if="frontmatter.blogPost && !cardView" :key="frontmatter.commentTerm" />
       <ArticlePull v-if="frontmatter.blogPost && !cardView" />
     </template>
     <template #sidebar-nav-before>
