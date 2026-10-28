@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  server: { fs: { strict: true, allow: [import.meta.dirname] } },
+  server: {
+    cors: { origin: ['https://giscus.app', /^https?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?$/] },
+    fs: { strict: true, allow: [import.meta.dirname] },
+  },
   plugins: [{
     name: 'local-blog-links',
     apply: 'serve',

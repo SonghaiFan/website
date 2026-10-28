@@ -1,0 +1,137 @@
+/* Loaded inside Giscus's iframe. Keep controls, replies and attribution intact. */
+html, body {
+  background: transparent;
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--comment-ink);
+}
+main {
+  --color-fg-default: var(--comment-ink);
+  --color-fg-muted: var(--comment-muted);
+  --color-fg-subtle: var(--comment-muted);
+  --color-canvas-default: transparent;
+  --color-canvas-subtle: transparent;
+  --color-canvas-inset: transparent;
+  --color-canvas-overlay: var(--comment-paper);
+  --color-border-default: transparent;
+  --color-border-muted: var(--comment-line);
+  --color-neutral-muted: var(--comment-wash);
+  --color-accent-fg: var(--comment-ink);
+  --color-accent-emphasis: var(--comment-ink);
+  --color-accent-muted: var(--comment-line);
+  --color-accent-subtle: transparent;
+  --color-btn-text: var(--comment-ink);
+  --color-btn-bg: transparent;
+  --color-btn-border: transparent;
+  --color-btn-shadow: none;
+  --color-btn-inset-shadow: none;
+  --color-btn-hover-bg: var(--comment-wash);
+  --color-btn-hover-border: transparent;
+  --color-btn-active-bg: var(--comment-wash);
+  --color-btn-selected-bg: transparent;
+  --color-btn-primary-text: var(--comment-paper);
+  --color-btn-primary-bg: var(--comment-ink);
+  --color-btn-primary-border: transparent;
+  --color-btn-primary-shadow: none;
+  --color-btn-primary-inset-shadow: none;
+  --color-btn-primary-hover-bg: var(--comment-muted);
+  --color-btn-primary-hover-border: transparent;
+  --color-btn-primary-selected-bg: var(--comment-ink);
+  --color-btn-primary-disabled-bg: var(--comment-muted);
+  --color-btn-primary-disabled-border: transparent;
+  --color-btn-primary-disabled-text: var(--comment-paper);
+  --color-segmented-control-bg: transparent;
+  --color-segmented-control-button-bg: transparent;
+  --color-segmented-control-button-selected-border: transparent;
+  --color-primer-shadow-inset: none;
+  --color-social-reaction-bg-hover: var(--comment-wash);
+  --color-social-reaction-bg-reacted-hover: var(--comment-wash);
+}
+button, textarea { font-family: inherit; }
+a { text-underline-offset: 3px; }
+button:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--comment-ink);
+  outline-offset: 3px;
+}
+.gsc-reactions { display: none; }
+.gsc-header { padding: 0 0 16px; font-size: 12px; color: var(--comment-muted); }
+.gsc-header h4 { font-weight: 400; }
+.gsc-header a { color: var(--comment-muted); text-decoration: none; }
+.gsc-header em { font-style: normal; font-size: 12px; }
+.gsc-header button { border: 0; box-shadow: none; font-size: 12px; }
+.gsc-comment-box, .gsc-comment-box-tabs, .gsc-comment-box-main,
+.gsc-comment-box-bottom, .gsc-comment-box-textarea-extras,
+.gsc-comment-box-preview, .gsc-reply-box, .gsc-replies,
+.gsc-comment > .color-bg-primary {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.gsc-comment-box { margin-bottom: 32px; }
+.gsc-comment-box-tabs { padding: 0; }
+.gsc-comment-box-tabs > div { margin: 0; }
+.gsc-comment-box-tabs button {
+  padding: 5px 0 !important;
+  margin: 0 20px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--comment-muted);
+  font-size: 12px;
+}
+.gsc-comment-box-tabs button.color-bg-primary { color: var(--comment-ink); }
+.gsc-comment-box-md-toolbar { opacity: .65; }
+.gsc-comment-box-main { padding: 0; }
+.gsc-comment-box-textarea {
+  min-height: 112px;
+  padding: 12px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--comment-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--comment-ink);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.gsc-comment-box-textarea::placeholder { color: var(--comment-muted); opacity: .8; }
+.gsc-comment-box-textarea:focus {
+  outline: none !important;
+  border-bottom: 2px solid var(--comment-ink) !important;
+}
+.gsc-comment-box-textarea-extras { min-height: 0; padding: 4px 0; }
+.gsc-comment-box-bottom { padding: 8px 0 0; }
+.gsc-comment-box-bottom .btn-primary {
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 400;
+}
+.gsc-comment-box-bottom .btn-primary:disabled { opacity: .45; }
+.gsc-comment { margin-top: 28px; }
+.gsc-comment-header { padding: 0 0 10px !important; }
+.gsc-comment-author { gap: 4px; font-size: 13px; }
+.gsc-comment-author-avatar img { width: 24px; height: 24px; }
+.gsc-comment-author .font-semibold { font-weight: 500; }
+.gsc-comment-author .color-box-border-info { border: 0; padding: 0 4px; color: var(--comment-muted); }
+.gsc-comment-content { padding: 0 0 12px !important; font-size: 14px; line-height: 1.75; }
+.gsc-comment-footer { padding: 0 0 12px !important; }
+.gsc-upvote-button { border: 0; background: transparent; box-shadow: none; color: var(--comment-muted); }
+.gsc-replies { padding: 0 0 0 16px !important; margin-left: 12px; }
+.gsc-reply-box { padding: 0 !important; }
+.gsc-reply-box > button {
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--comment-muted);
+  background: transparent;
+  font-size: 12px;
+}
+@media (max-width: 480px) {
+  .gsc-comment-author { flex-wrap: wrap; }
+  .gsc-replies { margin-left: 4px; padding-left: 10px !important; }
+}

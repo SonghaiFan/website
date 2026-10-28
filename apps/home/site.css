@@ -37,18 +37,21 @@
 .guestbook-dialog {
   width: min(760px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
-  padding: 28px;
+  padding: 32px 36px;
+  position: relative;
   overflow: auto;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 16px;
   background: var(--paper);
   color: var(--ink);
 }
-.guestbook-dialog::backdrop { background: rgb(33 24 17 / 35%); }
+.guestbook-dialog::backdrop { background: rgb(33 24 17 / 16%); }
 .guestbook-dialog h2 { margin: 0 0 12px; font-size: 24px; font-weight: 500; }
-.guestbook-dialog p, .guestbook-dialog > a { font-size: 14px; color: var(--ink-2); }
-.guestbook-close { float: right; }
+.guestbook-dialog p, .guestbook-dialog > a { font-size: 12px; color: var(--ink-3); }
+.guestbook-close { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; padding: 0; font-size: 26px; line-height: 1; }
+.guestbook-close:focus-visible { outline: 1px solid var(--ink-2); outline-offset: 2px; border-radius: 50%; }
 .guestbook-dialog .giscus { min-height: 220px; margin-top: 24px; }
+@media (max-width: 480px) { .guestbook-dialog { padding: 24px 20px; } }
 html {
   min-height: 100%;
   scroll-behavior: smooth;

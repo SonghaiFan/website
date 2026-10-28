@@ -1,0 +1,10 @@
+@import url("https://giscus.app/themes/noborder_light.css");
+@import url("./giscus-base.css?direct&v=20261028-minimal");
+:root {
+  color-scheme: light;
+  --comment-ink: #1b1a18;
+  --comment-muted: #75706a;
+  --comment-paper: #f7f6f3;
+  --comment-line: #e0dcd5;
+  --comment-wash: #edebe6;
+}

@@ -11,6 +11,9 @@ await cp(path.join(root, 'apps/home', 'index.html'), path.join(output, 'index.ht
 await cp(path.join(root, 'apps/home', 'site.css'), path.join(output, 'site.css'))
 await cp(path.join(root, 'apps/home', 'app.js'), path.join(output, 'app.js'))
 await cp(path.join(root, 'apps/home', 'engagement.js'), path.join(output, 'engagement.js'))
+for (const name of ['giscus.css', 'giscus-dark.css', 'giscus-base.css']) {
+  await cp(path.join(root, 'apps/home', name), path.join(output, name))
+}
 await cp(path.join(root, 'apps/home', 'favicon.svg'), path.join(output, 'favicon.svg'))
 await cp(path.join(root, 'apps/home', 'assets'), path.join(output, 'assets'), { recursive: true })
 await writeFile(path.join(output, 'CNAME'), 'songhai.site\n')

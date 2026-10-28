@@ -60,6 +60,10 @@ fs.cpSync(sourceDocsRoot, docsRoot, {
   },
 })
 fs.mkdirSync(path.join(outputRoot, "scripts"), { recursive: true })
+for (const name of ["giscus.css", "giscus-dark.css", "giscus-base.css"]) {
+  fs.mkdirSync(publicRoot, { recursive: true })
+  fs.copyFileSync(fileURLToPath(new URL(`../apps/home/${name}`, import.meta.url)), path.join(publicRoot, name))
+}
 
 function walk(directory) {
   if (!fs.existsSync(directory)) return []

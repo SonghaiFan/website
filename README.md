@@ -67,3 +67,5 @@ Home and Blog use separate Cloudflare Web Analytics sites. View visits, page vie
 Giscus stores public comments in **SonghaiFan/website → Discussions → Announcements**. Install the Giscus GitHub App only on that public repository. The private vault is never connected to Giscus. Home has an on-demand guestbook; public posts and project pages load comments near the end of the article. Sign-in is handled by GitHub. No OAuth secrets are stored in this repository.
 
 Public embed IDs live in `apps/home/engagement.js`, shared by Home and the Blog theme. Article translations share a discussion when they have the same translation key; otherwise the stable public URL path identifies the thread. `giscus.json` allows only the existing domains and the two local preview origins. Moderate replies in GitHub Discussions. Local verification does not post test comments.
+
+The borderless comment theme lives in `apps/home/giscus-base.css`, with light/dark palettes in `giscus.css` and `giscus-dark.css`. Both builds publish these same files. Local previews inline this CSS for the HTTPS widget; production uses each site's hosted CSS. Blog comments follow its appearance toggle.

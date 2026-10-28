@@ -10,7 +10,7 @@ export default defineConfig({
   vite: {
     resolve: { alias: { '@songhai-engagement': path.resolve(process.env.SONGHAI_BLOG_ROOT || process.cwd(), '../home/engagement.js') } },
     plugins: [obsidianDevPlugin()],
-    server: { host: "127.0.0.1", port: 5173, strictPort: true, cors: { origin: "http://127.0.0.1:4174" }, fs: { deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "**/Daily/**", "**/Notes/**"] } },
+    server: { host: "127.0.0.1", port: 5173, strictPort: true, cors: { origin: ["http://127.0.0.1:4174", "https://giscus.app"] }, fs: { deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "**/Daily/**", "**/Notes/**"] } },
   },
   locales: {
     root: { label: "English", link: "/", ...en },
