@@ -55,8 +55,8 @@ test('comments use strict stable keys and update only the trusted Giscus frame',
 });
 
 test('custom comment themes follow the embedding site and selected appearance', () => {
-  assert.equal(commentTheme(false, 'http://127.0.0.1:4174'), 'http://127.0.0.1:4174/giscus.css?direct&v=20261028-minimal');
-  assert.equal(commentTheme(true, 'https://blog.songhai.site'), 'https://blog.songhai.site/giscus-dark.css?v=20261028-minimal');
+  assert.equal(commentTheme(false, 'http://127.0.0.1:4174'), 'http://127.0.0.1:4174/giscus.css?direct&v=20261028-hierarchy');
+  assert.equal(commentTheme(true, 'https://blog.songhai.site'), 'https://blog.songhai.site/giscus-dark.css?v=20261028-hierarchy');
 });
 
 test('local previews inline the same CSS while production serves the theme directly', async () => {
@@ -68,5 +68,5 @@ test('local previews inline the same CSS while production serves the theme direc
   assert.match(css, /main\{border: 0;\}/);
   assert.doesNotMatch(css, /@import.*giscus-base/);
   assert.equal(await loadCommentTheme(true, 'https://blog.songhai.site', () => { throw new Error('Must not fetch'); }),
-    'https://blog.songhai.site/giscus-dark.css?v=20261028-minimal');
+    'https://blog.songhai.site/giscus-dark.css?v=20261028-hierarchy');
 });

@@ -46,11 +46,11 @@
   color: var(--ink);
 }
 .guestbook-dialog::backdrop { background: rgb(33 24 17 / 16%); }
-.guestbook-dialog h2 { margin: 0 0 12px; font-size: 24px; font-weight: 500; }
-.guestbook-dialog p, .guestbook-dialog > a { font-size: 12px; color: var(--ink-3); }
+.guestbook-dialog h2 { margin: 0 0 6px; font-size: 24px; font-weight: 600; letter-spacing: -.02em; }
+.guestbook-dialog p, .guestbook-dialog > a { font-size: 13px; color: var(--ink-3); }
 .guestbook-close { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; padding: 0; font-size: 26px; line-height: 1; }
 .guestbook-close:focus-visible { outline: 1px solid var(--ink-2); outline-offset: 2px; border-radius: 50%; }
-.guestbook-dialog .giscus { min-height: 220px; margin-top: 24px; }
+.guestbook-dialog .giscus { min-height: 220px; margin-top: 28px; }
 @media (max-width: 480px) { .guestbook-dialog { padding: 24px 20px; } }
 html {
   min-height: 100%;

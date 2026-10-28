@@ -26,7 +26,7 @@ export function commentTheme(dark = false, origin = location.origin) {
   // Runtime iframe links bypass Vite's HTML transform, so local styles need
   // its direct-CSS mode rather than the JavaScript module response.
   const local = ['127.0.0.1', 'localhost'].includes(new URL(origin).hostname);
-  return `${origin}/giscus${dark ? '-dark' : ''}.css?${local ? 'direct&' : ''}v=20261028-minimal`;
+  return `${origin}/giscus${dark ? '-dark' : ''}.css?${local ? 'direct&' : ''}v=20261028-hierarchy`;
 }
 
 export async function loadCommentTheme(dark = false, origin = location.origin, request = fetch) {
@@ -35,7 +35,7 @@ export async function loadCommentTheme(dark = false, origin = location.origin, r
   // The HTTPS widget cannot reliably request loopback HTTP styles. Read them
   // from the local parent and give the widget the identical CSS as a data URL.
   const responses = await Promise.all([
-    request(url), request(`${origin}/giscus-base.css?direct&v=20261028-minimal`),
+    request(url), request(`${origin}/giscus-base.css?direct&v=20261028-hierarchy`),
   ]);
   if (responses.some((response) => !response.ok)) throw new Error('Comment preview theme unavailable');
   const [palette, base] = await Promise.all(responses.map((response) => response.text()));

@@ -1,5 +1,5 @@
 @import url("https://giscus.app/themes/noborder_light.css");
-@import url("./giscus-base.css?direct&v=20261028-minimal");
+@import url("./giscus-base.css?direct&v=20261028-hierarchy");
 :root {
   color-scheme: light;
   --comment-ink: #1b1a18;
