@@ -1,6 +1,6 @@
 # Migration
 
-Website code is consolidated in this repository; the Obsidian vault remains an independent private repository. Home, Blog and API retain their existing domains and publishing resources.
+Website code is consolidated in this repository; the Obsidian vault remains an independent private repository. Home, Blog and API retain their existing domains. Home publishes directly from this public repository; Blog retains its private publishing repository.
 
 ## Provenance and preservation
 
@@ -10,9 +10,9 @@ The public repository starts with a filtered new history. Original repositories 
 
 ## Publishing design
 
-GitHub Pages has one site per repository. Home and Blog therefore retain two publishing targets, with thin wrappers calling the shared workflow here. Wrapper templates live in deployment/. Blog builds inside its private vault repository. Shared checkout paths are explicit; only generated public output is uploaded.
+GitHub Pages has one site per repository. This public website repository publishes Home directly to songhai.site after main-branch CI succeeds. The Deploy homepage workflow also supports manual recovery using the tested tag. The former Frankfsh/frank_home publishing target is retired.
 
-Public main-branch CI promotes successful commits to the tested tag. Private target workflows periodically resolve that tag and skip if build.json already matches; article pushes build immediately. This avoids holding private-vault credentials or a broad personal token in public CI. Scheduling is eventually consistent, not an immediate dispatch guarantee. A manual dispatch with an exact SHA publishes immediately and supports rollback.
+Blog remains published from the private vault repository using the shared workflow here. Its scheduled workflow resolves the tested tag and skips if build.json already matches; article pushes build immediately. Public CI never checks out the private vault. Only generated public output is uploaded.
 
 API deployment uses the existing Cloudflare identity, Worker name, route, rate limits and secrets. The root deploy:api command is the maintained deployment entrypoint; it does not copy credentials into CI.
 
