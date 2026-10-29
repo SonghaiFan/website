@@ -59,7 +59,18 @@ try {
   assert.equal(await has('Updated public text'), true);
   write('Blog/Preview.md', '# Preview\n\nRecovered public text.\n');
   await until(() => has('Recovered public text'), 'recovery');
-  console.info('PASS: separate vault; startup; local links/CORS; private-file exclusion; add/edit/delete; failed-stage recovery.');
+  fs.renameSync(path.join(vault, 'Blog'), path.join(vault, 'Public'));
+  fs.renameSync(path.join(vault, 'assets'), path.join(vault, 'Media'));
+  fs.renameSync(path.join(vault, 'Notes'), path.join(vault, 'Drafts'));
+  write('.blog-publisher.json', JSON.stringify({ publicFolder: 'Public', assetsFolder: 'Media', privateFolders: ['Drafts', 'Daily'] }));
+  write('Public/Preview.md', '# Preview\n\nCustom folder content. [[Hidden]]\n');
+  await until(() => has('Custom folder content'), 'custom directory configuration refresh');
+  write('Public/Preview.md', '# Preview\n\nCustom folder edit. [[Hidden]]\n');
+  await until(() => has('Custom folder edit'), 'custom directory watcher');
+  const privateFile = await fetch(`http://127.0.0.1:5173/@fs${path.join(vault, 'Drafts/Hidden.md')}`);
+  assert.equal(privateFile.status, 403);
+  assert.doesNotMatch(await privateFile.text(), /PRIVATE_PREVIEW_SENTINEL/);
+  console.info('PASS: separate vault; startup; local links/CORS; private-file exclusion; add/edit/delete; failed-stage recovery; custom directory changes and watcher.');
 } finally {
   server.kill('SIGTERM');
   await finished;

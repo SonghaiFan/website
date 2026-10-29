@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { pathToFileURL } from "node:url";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import type { Plugin } from "vite";
@@ -9,7 +10,7 @@ if (!vaultRoot) throw new Error("Use npm run dev from songhai-web to configure V
 const stageRoot = path.join(siteRoot, ".stage");
 const refreshRoot = path.join(siteRoot, ".stage-dev-refresh");
 const stageScript = path.resolve(siteRoot, "../../scripts/stage-vitepress.mjs");
-const watchedRoots = [...["Blog", "assets", "Notes", "Daily"].map((name) => path.join(vaultRoot, name)), path.join(siteRoot, "docs")];
+
 
 function filesUnder(root: string): string[] {
   if (!fs.existsSync(root)) return [];
@@ -53,8 +54,15 @@ export function obsidianDevPlugin(): Plugin {
   return {
     name: "obsidian-blog-live-update",
     apply: "serve",
-    configureServer(server) {
-      server.watcher.add(watchedRoots);
+    async configureServer(server) {
+      const { readPublishingConfig, CONFIG_FILE } = await import(pathToFileURL(path.resolve(siteRoot, "../../scripts/publishing-config.mjs")).href);
+      let watchedRoots: string[] = [];
+      const updateRoots = () => {
+        const config = readPublishingConfig(vaultRoot);
+        watchedRoots = [...[config.publicFolder, config.assetsFolder, ...config.privateFolders].map((name: string) => path.join(vaultRoot, name)), path.join(vaultRoot, CONFIG_FILE), path.join(siteRoot, "docs")];
+        server.watcher.add(watchedRoots);
+      };
+      updateRoots();
       let timer: ReturnType<typeof setTimeout> | undefined;
       let running = false;
       let closed = false;
@@ -68,6 +76,7 @@ export function obsidianDevPlugin(): Plugin {
           try {
             await regenerate();
             if (closed) return;
+            updateRoots();
             syncStage();
             server.ws.send({ type: "full-reload" });
             console.info("[blog] Obsidian changes are live");

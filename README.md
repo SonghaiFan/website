@@ -63,3 +63,9 @@ The shared widget owns its component layout and the named `songhai_light` / `son
 ### Blog URL keys
 
 Ordinary Blog notes keep their Chinese filenames and titles and declare a stable English `slug` in frontmatter, for example `slug: digital-asset-cleanup`. Use lowercase letters, numbers, and hyphens. Paired translations share the same slug. Published URLs and comment keys use this value; changing the title does not change either. Project pages retain their existing paths. Duplicate and malformed slugs fail the build.
+
+## Configurable publishing folders
+
+Blog Publisher settings can save `.blog-publisher.json` at the vault root. Both local builds and CI read this tracked file. Defaults are `publicFolder: Blog`, `englishFolder: en`, `projectsFolder: projects`, `assetsFolder: assets`, and `privateFolders: [Daily, Notes]`. English/project paths are relative to the public/language root; other paths are vault-relative. Only Markdown files directly within the four article/project folders are published. Public URLs stay unchanged. Private folders are used for link resolution by filename only; only referenced attachments are copied (plus the existing three theme icons). Paths cannot escape the vault, be hidden directories, use symlinks, or overlap public/private/attachment roots. Changes do not move existing files.
+
+The private deployment wrapper must trigger on all main-branch pushes so custom directories and the configuration file can trigger publication.

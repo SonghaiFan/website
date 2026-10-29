@@ -1,4 +1,5 @@
 import fs from "node:fs"
+import { readPublishingConfig } from "./publishing-config.mjs"
 import path from "node:path"
 import { execFileSync } from "node:child_process"
 import { createRequire } from "node:module"
@@ -15,8 +16,9 @@ const outputRoot = path.resolve(outputArg)
 const docsRoot = path.join(outputRoot, "docs")
 const publicRoot = path.join(docsRoot, "public")
 const siteOrigin = "https://blog.songhai.site"
-const blogRoot = path.join(vaultRoot, "Blog")
-const assetsRoot = path.join(vaultRoot, "assets")
+const publishing = readPublishingConfig(vaultRoot)
+const blogRoot = path.join(vaultRoot, publishing.publicFolder)
+const assetsRoot = path.join(vaultRoot, publishing.assetsFolder)
 for (const folder of [blogRoot, assetsRoot]) {
   if (!fs.statSync(folder, { throwIfNoEntry: false })?.isDirectory()) throw new Error(`Missing vault directory: ${folder}`)
 }
@@ -65,6 +67,7 @@ function walk(directory) {
   if (!fs.existsSync(directory)) return []
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const file = path.join(directory, entry.name)
+    if (entry.isSymbolicLink()) throw new Error(`Symbolic links are not allowed in publishing sources: ${file}`)
     return entry.isDirectory() ? walk(file) : [file]
   })
 }
@@ -85,14 +88,14 @@ for (const name of cardBrandIcons) {
 }
 const locales = [
   { name: "zh", source: blogRoot, output: path.join(docsRoot, "zh/blog/posts"), urlPrefix: "/zh/blog/posts/" },
-  { name: "en", source: path.join(blogRoot, "en"), output: path.join(docsRoot, "en/blog/posts"), urlPrefix: "/blog/posts/" },
+  { name: "en", source: path.join(blogRoot, publishing.englishFolder), output: path.join(docsRoot, "en/blog/posts"), urlPrefix: "/blog/posts/" },
 ]
 
 // Projects are written like posts (Blog/projects, Blog/en/projects) and staged by
 // the same pipeline; they differ only in where they are listed and in their order.
 const projectLocales = [
-  { name: "zh", kind: "project", source: path.join(blogRoot, "projects"), output: path.join(docsRoot, "zh/projects"), urlPrefix: "/zh/projects/" },
-  { name: "en", kind: "project", source: path.join(blogRoot, "en/projects"), output: path.join(docsRoot, "en/projects"), urlPrefix: "/projects/" },
+  { name: "zh", kind: "project", source: path.join(blogRoot, publishing.projectsFolder), output: path.join(docsRoot, "zh/projects"), urlPrefix: "/zh/projects/" },
+  { name: "en", kind: "project", source: path.join(blogRoot, publishing.englishFolder, publishing.projectsFolder), output: path.join(docsRoot, "en/projects"), urlPrefix: "/projects/" },
 ]
 
 const collect = (collectionLocales) => collectionLocales.flatMap((locale) => {
@@ -163,7 +166,7 @@ for (const page of pages) {
   if (routeKeys.has(page.url)) throw new Error(`Duplicate slug for ${page.locale}: ${page.slug}`)
   routeKeys.add(page.url)
 }
-const privateNotes = ["Daily", "Notes"].flatMap((folder) =>
+const privateNotes = publishing.privateFolders.flatMap((folder) =>
   walk(path.join(vaultRoot, folder)).filter((file) => file.endsWith(".md")))
 
 const translations = new Map()
@@ -200,7 +203,7 @@ function attachment(target, from) {
   }
   const relative = path.relative(fs.realpathSync(assetsRoot), unique[0])
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error(`Public attachment must be inside assets/: ${clean}`)
+    throw new Error(`Public attachment must be inside ${publishing.assetsFolder}/: ${clean}`)
   }
   const destination = path.join(publicRoot, "assets", relative)
   fs.mkdirSync(path.dirname(destination), { recursive: true })
@@ -211,7 +214,8 @@ function attachment(target, from) {
 
 function findPost(target, from) {
   const clean = decodeURIComponent(target.trim()).replace(/\.md$/i, "")
-  const explicit = clean.replace(/^\//, "").replace(/^Blog\//i, "")
+  const rooted = clean.replace(/^\//, "")
+  const explicit = rooted.startsWith(publishing.publicFolder + "/") ? rooted.slice(publishing.publicFolder.length + 1) : rooted
   const scoped = pages.filter((post) => {
     const relative = path.relative(blogRoot, post.file).replace(/\.md$/i, "")
     return relative === explicit || post.slug === clean || post.slug === path.basename(clean)
@@ -225,7 +229,8 @@ function findPost(target, from) {
   }
   const privateMatches = privateNotes.filter((file) => {
     const relative = path.relative(vaultRoot, file).replace(/\.md$/i, "")
-    const withinFolder = relative.replace(/^(?:Daily|Notes)\//, "")
+    const privateRoot = publishing.privateFolders.find(folder => relative.startsWith(folder + "/"))
+    const withinFolder = privateRoot ? relative.slice(privateRoot.length + 1) : relative
     return relative === clean || withinFolder === clean
   })
   const candidates = privateMatches.length ? privateMatches

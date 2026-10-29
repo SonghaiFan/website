@@ -376,3 +376,35 @@ test("rejects duplicate or malformed semantic slugs", (t) => {
   write("Blog/Second.md", '---\nslug: Invalid Key\n---\nSecond\n')
   assert.match(run().stderr, /Invalid slug/)
 })
+
+
+test("custom publishing folders agree across staging, links and private exclusions", (t) => {
+  const { vault, site, write, run } = fixture(t)
+  fs.renameSync(path.join(vault, "assets"), path.join(vault, "Media"))
+  write(".blog-publisher.json", JSON.stringify({ publicFolder: "Writing/Public", englishFolder: "English", projectsFolder: "Work", assetsFolder: "Media", privateFolders: ["Journal", "Drafts"] }))
+  write("Writing/Public/Hello.md", '---\nslug: hello\n---\nPublic text [[Journal/Secret]] ![[Media/photo.png]]\n')
+  write("Writing/Public/English/Hello.md", '---\nslug: hello\n---\nEnglish text\n')
+  write("Writing/Public/Work/demo.md", 'Project details.\n')
+  write("Media/photo.png", "public photo")
+  write("Media/unused.png", "PRIVATE ATTACHMENT")
+  write("Journal/Secret.md", "PRIVATE BODY")
+  write("Blog/Old.md", "OLD PUBLIC ROOT MUST NOT APPEAR")
+  const result = run()
+  assert.equal(result.status, 0, result.stderr)
+  const article = fs.readFileSync(path.join(site, ".stage/docs/zh/blog/posts/hello.md"), "utf8")
+  assert.match(article, /Public text/)
+  assert.doesNotMatch(article, /PRIVATE BODY/)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/en/blog/posts/hello.md")), true)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/zh/projects/demo.md")), true)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/public/assets/photo.png")), true)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/public/assets/unused.png")), false)
+  assert.equal(fs.existsSync(path.join(site, ".stage/docs/zh/blog/posts/old.md")), false)
+})
+
+test("rejects unsafe publishing config before staging", (t) => {
+  const { write, run } = fixture(t)
+  for (const publicFolder of ["../Notes", ".obsidian", "Notes/Public", "/absolute"]) {
+    write(".blog-publisher.json", JSON.stringify({ publicFolder }))
+    assert.notEqual(run().status, 0, publicFolder)
+  }
+})
