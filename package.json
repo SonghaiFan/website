@@ -18,11 +18,8 @@
     "build:blog": "node scripts/blog.mjs build",
     "test": "node --test scripts/*.test.mjs apps/api/test/*.test.mjs",
     "test:preview": "node scripts/test-preview.mjs",
-    "dev:resume": "npm run dev --workspace @songhai/resume",
-    "build:resume": "npm run build --workspace @songhai/resume",
-    "check": "npm test && npm run build:resume && npm run build",
+    "check": "npm test && npm run build",
     "status": "node scripts/status.mjs",
-    "cv:export": "node scripts/export-resume.mjs",
     "deploy:api": "wrangler deploy --config apps/api/wrangler.jsonc --keep-vars"
   },
   "devDependencies": {

@@ -59,44 +59,15 @@ try {
   assert.equal(await has('Updated public text'), true);
   write('Blog/Preview.md', '# Preview\n\nRecovered public text.\n');
   await until(() => has('Recovered public text'), 'recovery');
-  const editor = await (await fetch('http://127.0.0.1:4176/')).text();
-  const token = editor.match(/name="resume-session" content="([^"]+)"/)?.[1];
-  assert.ok(token, 'private editor session token');
-  const snapshot = await (await fetch('http://127.0.0.1:4176/__local/resume')).json();
-  assert.equal(snapshot.document.profile.name, 'Alex Example');
-  const endpoint = 'http://127.0.0.1:4176/__local/resume';
-  const put = (document, revision, session = token) => fetch(endpoint, { method: 'PUT', headers: { Origin: 'http://127.0.0.1:4176', 'Content-Type': 'application/json', 'X-Resume-Session': session }, body: JSON.stringify({document,revision}) });
-  assert.equal((await put(snapshot.document, snapshot.revision, 'wrong')).status, 403);
-  const edited = structuredClone(snapshot.document); edited.profile.name = 'Saved sample';
-  const saved = await (await put(edited, snapshot.revision)).json();
-  assert.equal((await put(snapshot.document, snapshot.revision)).status, 409);
-  assert.equal((await (await fetch(endpoint)).json()).document.profile.name, 'Saved sample');
-  assert.equal(saved.document.profile.name, 'Saved sample');
-  const exported = await fetch(endpoint + '/export', { method: 'POST', headers: { Origin: 'http://127.0.0.1:4176', 'Content-Type': 'application/json', 'X-Resume-Session': token }, body: JSON.stringify({ versionId: 'template:product', mode: 'visual', textScale: 1, revision: saved.revision }) });
-  const draft = await exported.json();
-  assert.equal(exported.status, 200, JSON.stringify(draft));
-  const pdf = Buffer.from(await (await fetch('http://127.0.0.1:4176' + draft.pdf)).arrayBuffer());
-  assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
-  const image = Buffer.from(await (await fetch('http://127.0.0.1:4176' + draft.preview)).arrayBuffer());
-  assert.equal(image.subarray(1, 4).toString(), 'PNG');
-  fs.mkdirSync(path.join(root, 'artifacts/resume'), { recursive: true });
-  fs.writeFileSync(path.join(root, 'artifacts/resume/sample.pdf'), pdf);
-  fs.writeFileSync(path.join(root, 'artifacts/resume/sample.png'), image);
-  const editedAgain = structuredClone(saved.document); editedAgain.profile.name = 'Newer saved sample';
-  assert.equal((await put(editedAgain, saved.revision)).status, 200);
-  const staleDraft = await fetch(endpoint + '/promote', { method: 'POST', headers: { Origin: 'http://127.0.0.1:4176', 'Content-Type': 'application/json', 'X-Resume-Session': token }, body: JSON.stringify({ id: draft.id }) });
-  assert.equal(staleDraft.status, 409);
-  assert.doesNotMatch(JSON.stringify(await index()), /Saved sample|Newer saved sample/);
-  console.info('PASS: résumé session security, durable save, conflict detection, PDF/PNG export, stale-draft protection.');
   console.info('PASS: separate vault; startup; local links/CORS; private-file exclusion; add/edit/delete; failed-stage recovery.');
 } finally {
   server.kill('SIGTERM');
   await finished;
   fs.rmSync(vault, { recursive: true, force: true });
 }
-for (const port of [4174, 5173, 4176]) {
+for (const port of [4174, 5173]) {
   let running = false;
   try { await fetch(`http://127.0.0.1:${port}/`); running = true; } catch {}
   assert.equal(running, false, `Port ${port} remained open after shutdown`);
 }
-console.info('PASS: unified shutdown releases all three ports.');
+console.info('PASS: unified shutdown releases both preview ports.');

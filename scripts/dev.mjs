@@ -4,7 +4,7 @@ import { root, vaultRoot } from './config.mjs';
 
 vaultRoot();
 // Refuse busy ports instead of silently opening a different app or port.
-for (const port of [4174, 5173, 4176]) {
+for (const port of [4174, 5173]) {
   await new Promise((resolve, reject) => {
     const server = net.createServer();
     server.once('error', () => reject(new Error(`Port ${port} is busy. Stop the previous preview before running npm run dev.`)));
@@ -28,10 +28,10 @@ function stop(code = 0) {
   timer.unref();
 }
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => stop());
-for (const workspace of ['@songhai/home', '@songhai/blog', '@songhai/resume']) {
+for (const workspace of ['@songhai/home', '@songhai/blog']) {
   const child = spawn('npm', ['run', 'dev', '--workspace', workspace], { cwd: root, stdio: 'inherit', detached: true });
   children.push(child);
   child.once('error', (error) => { console.error(error); stop(1); });
   child.once('exit', (code) => { if (!stopping) stop(code || 1); });
 }
-console.info('Home: http://127.0.0.1:4174/\nBlog: http://127.0.0.1:5173/zh/\nResume: http://127.0.0.1:4176/\nCtrl+C stops all previews.');
+console.info('Home: http://127.0.0.1:4174/\nBlog: http://127.0.0.1:5173/zh/\nCtrl+C stops both previews.');
