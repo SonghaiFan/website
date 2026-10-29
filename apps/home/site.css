@@ -247,38 +247,14 @@ body:has(.stage:not(.has-conversation)) {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
-/* Preserve the author's two-line handwriting at a comfortable reading size. */
+/* Typeset greeting, using the same sans-serif family as the page. */
 .opening h1 {
   margin: 0;
-  font-size: clamp(3.5rem, 9vw, 8.75rem);
-  line-height: 1;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
 }
-.greeting-art {
-  display: block;
-  width: min(100%, 4.7em);
-  height: auto;
-}
-.greeting-art-zh { display: none; }
-html:lang(zh-CN) .greeting-art-en { display: none; }
-html:lang(zh-CN) .greeting-art-zh {
-  display: block;
-  width: min(100%, 4em);
-}
-/* Animate the original pen paths, with a brief pen lift between groups. */
-html.intro-active:lang(en) .stage:not(.has-conversation) .greeting-art-en path,
-html.intro-active:lang(zh-CN) .stage:not(.has-conversation) .greeting-art-zh path {
-  stroke-dasharray: 1;
-  animation: handwriting var(--stroke-duration) ease-in-out var(--stroke-delay) both;
-}
-@keyframes handwriting {
-  from { stroke-dashoffset: 1; opacity: 0; }
-  1% { opacity: 1; }
-  to { stroke-dashoffset: 0; opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html.intro-active:lang(en) .stage:not(.has-conversation) .greeting-art-en path,
-  html.intro-active:lang(zh-CN) .stage:not(.has-conversation) .greeting-art-zh path { animation: none; stroke-dasharray: none; }
-}
+.opening h1 > span { display: block; }
 .opening-intro {
   max-width: 36rem;
   margin: clamp(1.5rem, 4vh, 2.5rem) 0 0;
@@ -1835,13 +1811,12 @@ button.cv-link {
   }
 }
 
-/* The rest of the introduction follows the final pen stroke. Visibility also
-   keeps controls out of keyboard navigation until their entrance begins. */
-html { --opening-reveal: opening-reveal-en; --greeting-end: 4041ms; }
-html:lang(zh-CN) { --opening-reveal: opening-reveal-zh; --greeting-end: 5022ms; }
+/* Supporting content enters alongside the typeset greeting. */
+html { --opening-reveal: opening-reveal-en; --greeting-end: 0ms; }
+html:lang(zh-CN) { --opening-reveal: opening-reveal-zh; --greeting-end: 0ms; }
 html.intro-active body:has(.stage:not(.has-conversation)) :is(.opening-intro, .opening-invitation, .composer-dock) {
   animation: var(--opening-reveal) var(--slow) var(--ease) both;
-  animation-delay: calc(var(--greeting-end, 5s) + var(--reveal-gap, 0ms));
+  animation-delay: calc(var(--greeting-end, 0ms) + var(--reveal-gap, 0ms));
 }
 .opening-invitation { --reveal-gap: 180ms; }
 .composer-dock { --reveal-gap: 360ms; }
@@ -1875,8 +1850,8 @@ html.intro-active body:has(.stage:not(.has-conversation)) :is(.opening-intro, .o
 .opening-inner { --greeting-column: min(100%, 36rem); }
 .opening h1,
 .opening-intro { width: var(--greeting-column); }
-.opening .greeting-art,
-html:lang(zh-CN) .opening .greeting-art-zh { width: 100%; }
+.opening h1 { font-size: clamp(2rem, 5vw, 4.5rem); }
 @media (max-width: 760px) {
   .opening-inner { --greeting-column: 66.666%; }
+  .opening h1 { font-size: clamp(1.5rem, 6.4vw, 3rem); }
 }

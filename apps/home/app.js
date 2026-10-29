@@ -102,14 +102,11 @@ function startFirstIntro(replay = false) {
   if ((!replay && seen) || reduceMotion.matches) return;
   finishIntro();
   if (introVideo) introVideo.currentTime = 0;
-  // Commit the cleared animation state so another logo click starts at stroke one.
+  // Commit the cleared animation state before replaying the introduction.
   void opening.offsetWidth;
   try { localStorage.setItem('frank-intro-seen', '1'); } catch {}
   document.documentElement.classList.add('intro-active');
-  const strokes = [...document.querySelectorAll(`.greeting-art-${language} path`)];
-  const duration = Math.max(...strokes.map((path) =>
-    parseFloat(path.style.getPropertyValue('--stroke-delay')) + parseFloat(path.style.getPropertyValue('--stroke-duration'))));
-  introTimer = setTimeout(playIntroVideo, duration + 120);
+  introTimer = setTimeout(playIntroVideo, 120);
 }
 introVideo?.addEventListener('playing', () => {
   introVideo.closest('.opening-media')?.classList.add('is-playing');
